@@ -45,6 +45,7 @@ func demoFunc() {
 }
 
 func main() {
+	// 释放协程资源，一般应该主进程推出时候才需要释放这个资源
 	defer ants.Release()
 
 	runTimes := 1000
@@ -57,6 +58,7 @@ func main() {
 	}
 	for i := 0; i < runTimes; i++ {
 		wg.Add(1)
+		// 提交一些任务，任务提交之后就开始运行了
 		_ = ants.Submit(syncCalculateSum)
 	}
 	wg.Wait()
@@ -73,6 +75,7 @@ func main() {
 	// Submit tasks one by one.
 	for i := 0; i < runTimes; i++ {
 		wg.Add(1)
+		// TODO 这里是在干嘛？
 		_ = p.Invoke(int32(i))
 	}
 	wg.Wait()
